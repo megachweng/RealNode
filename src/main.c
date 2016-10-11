@@ -6,7 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <stdlib.h>
+#include <signal.h>
+#include <string.h>
+#include <stdbool.h>
 /* 子函数声明 */
 int Authentication(const char *UserName, const char *Password, const char *DeviceName);
 
@@ -20,11 +23,43 @@ int Authentication(const char *UserName, const char *Password, const char *Devic
  */
 extern void MD5Calc(unsigned char *data, unsigned int len, unsigned char *output);
 
+/* 检测程序是否已经运行  */
+int checkProcessname(int pid){
+    FILE *fp;
+    char pname[100];
+    char kpid[100];
+    sprintf(kpid, "%d",pid);
+    char query[200];
+    
+    strcat(query, "ps -p ");
+    strcat(query, kpid);
+    strcat(query," -o comm=");
+    fp = popen(query, "r");
+    if (fp == NULL) {
+        printf("Failed to get PID\n" );
+        exit(1);
+    }
+    if (fgets(pname, sizeof(pname)-1, fp) != NULL) {
+        pclose(fp);
+    }
+    
+    if (strstr(pname, "RealNode")) {
+        fclose(fp);
+        return 0;
+    }
+    fclose(fp);
+    return -1;
+}
+
 int main(int argc, char *argv[])
 {
 	char *UserName;
 	char *Password;
 	char *DeviceName;
+    
+    FILE *fp;
+    int lpid;
+    char cpid[255];
 
 	/* 检查当前是否具有root权限 */
 	if (getuid() != 0) {
@@ -50,6 +85,22 @@ int main(int argc, char *argv[])
 	UserName = argv[1];
 	Password = argv[2];
 
+  
+    sprintf(cpid, "%d",getpid());
+    if((fp=fopen("/tmp/RealNode.pid", "r"))!=NULL)
+    {
+        fscanf(fp, "%d", &lpid);
+        if(checkProcessname(lpid)==0){
+            printf("RealNode is already running,Now I gotta kill him!");
+            kill(lpid, SIGTERM);
+        }
+        
+    }
+    fclose(fp);
+    
+    fp = fopen("/tmp/RealNode.pid", "w+");
+    fputs(cpid, fp);
+    fclose(fp);
 	/* 调用子函数完成802.1X认证 */
 	Authentication(UserName, Password, DeviceName);
 
