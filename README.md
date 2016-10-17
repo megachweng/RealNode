@@ -4,7 +4,8 @@ Mac下兼容iNode的H3C8021x认证命令行客户端。
 
 #Usage
 >方便食用请将程序放置在系统环境变量指定的目录下`echo $PATH`。  
->请务必以管理员权限运行！！  
+>请务必以管理员权限运行！！
+>添加可执行权限 `sudo chmod +x RealNode`。  
 >于系统报告中确认自己的认证网卡，Mac下一般以en开头，老款有网线接口的MacBookPro一般为en0，新款需要转换头的MacBookPro en0默认为无线网卡，请细心甄别。
 
 ![](http://ww3.sinaimg.cn/large/801b780agw1f8n7vnc9r4j21by0z4449.jpg)
