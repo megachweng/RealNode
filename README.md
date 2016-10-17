@@ -1,7 +1,8 @@
 # Discreption
 iNode for Mac 
-Mac下兼容iNode的H3C8021x认证命令行客户端。
+Mac下兼容iNode的H3C8021x认证**命令行**客户端。  
 
+喜欢有图形界面的版本?请戳这里 [RealiNode With GUI](https://github.com/megachweng/RealiNode-Cocoa)
 #Usage
 >方便食用请将程序放置在系统环境变量指定的目录下`echo $PATH`。  
 >请务必以管理员权限运行！！
