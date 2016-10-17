@@ -21,7 +21,8 @@ Mac下兼容iNode的H3C8021x认证命令行客户端。
 
 #Build From Source
 ### Dependence
-Xcode >3.2
+Xcode >3.2  
+
 libpcap
 
 `git clone https://github.com/megachweng/RealNode.git`
